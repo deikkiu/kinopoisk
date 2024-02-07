@@ -1,1 +1,1 @@
-# kinopoisk
+# kinopoisk-lite
