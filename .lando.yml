@@ -1,7 +1,7 @@
 name: kinopoisk
 recipe: lamp
 config:
-  php: 8.2
+  php: 8.1
   webroot: .
 services:
   phpmyadmin:
