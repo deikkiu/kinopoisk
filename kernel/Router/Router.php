@@ -1,6 +1,9 @@
 <?php
 
-namespace App\Router;
+namespace App\Kernel\Router;
+
+use App\Kernel\View\View;
+use App\Kernel\Controller\Controller;
 
 class Router
 {
@@ -10,7 +13,7 @@ class Router
     "POST" => [],
   ];
 
-  public function __construct()
+  public function __construct(private View $view)
   {
     $this->initRoutes();
   }
@@ -23,7 +26,17 @@ class Router
       $this->notFound();
     }
 
-    $route->getAction()();
+    if (is_array($route->getAction())) {
+      [$controller, $action] = $route->getAction();
+
+      /** @var Controller $controller */
+      $controller = new $controller();
+
+      call_user_func([$controller, 'setView'], $this->view);
+      call_user_func([$controller, $action]);
+    } else {
+      call_user_func($route->getAction());
+    }
   }
 
   private function notFound(): void
